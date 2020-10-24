@@ -41,4 +41,9 @@ public class CoordenadaService {
     	return dao.seleccionarPorVehiculo(id_vehiculo);
     }
 
+	public List<Coordenada> obtenerCercanos(Double latitud, Double longitud) {
+		List<Coordenada> cercanos = dao.obtenerCercanos(latitud, longitud);			
+		return cercanos;
+	}
+
 }

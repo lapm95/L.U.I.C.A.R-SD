@@ -86,5 +86,15 @@ public class CoordenadaRESTService {
 
         return builder.build();
     }
+    
+    @GET
+    @Path("/{latitud},{longitud}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Coordenada> obtenerCercanos(@QueryParam("latitud") Double latitud, @QueryParam("longitud") Double longitud) {
+        
+    	List<Coordenada> cercanos = coordenadaService.obtenerCercanos(latitud, longitud);
+    	
+    	return cercanos;
+    }
 
 }

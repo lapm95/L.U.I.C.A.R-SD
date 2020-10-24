@@ -26,7 +26,7 @@ public class CoordenadasDAO {
 		 * @return
 		 */
 	 public List<Coordenada> seleccionar() {
-			String query = "SELECT id_viaje, id_vehiculo, fecha, hora, latitud, longitud FROM persona ORDER BY id_viaje";
+			String query = "SELECT id_viaje, id_vehiculo, fecha, hora, latitud, longitud FROM coordenada ORDER BY id_viaje";
 			
 			List<Coordenada> lista = new ArrayList<Coordenada>();
 			
@@ -63,7 +63,7 @@ public class CoordenadasDAO {
 		}
 	 
 	 public Coordenada seleccionarPorVehiculo(Integer id_vehiculo) {
-			String SQL = "SELECT id_viaje, id_vehiculo, fecha, hora, latitud, longitud FROM persona where id_viaje = ?";
+			String SQL = "SELECT id_viaje, id_vehiculo, fecha, hora, latitud, longitud FROM coordenada WHERE id_viaje = ?";
 			
 			Coordenada v = null;
 			
@@ -102,7 +102,7 @@ public class CoordenadasDAO {
 	 
 	 public long insertar(Coordenada v) throws SQLException {
 
-	        String SQL = "INSERT INTO viaje(id_viaje, id_vehiculo, fecha, hora, latitud, longitud) "
+	        String SQL = "INSERT INTO coordenada(id_viaje, id_vehiculo, fecha, hora, latitud, longitud) "
 	                + "VALUES(?,?,?,?,?,?)";
 	 
 	        long id = 0;
@@ -146,6 +146,50 @@ public class CoordenadasDAO {
 	        return id;
 	    	
 	    	
-	    }	 
+	    }
+
+	public List<Coordenada> obtenerCercanos(Double latitud, Double longitud) {
+		Double limite = 20.00;			//la distancia maxima considerada
+		
+		String SQL = "SELECT id_viaje, id_vehiculo, fecha, hora, latitud, longitud FROM coordenada WHERE sqrt(power(latitud-?,2)+power(longitud-?,2)) > ?";
+		
+		List<Coordenada> cercanos = new ArrayList<Coordenada>();
+		
+		Connection conn = null;
+		
+		try 
+        {
+        	conn = Bd.connect();
+        	PreparedStatement pstmt = conn.prepareStatement(SQL);
+        	pstmt.setDouble(1, latitud);
+        	pstmt.setDouble(2, longitud);
+        	pstmt.setDouble(3, limite);
+        	
+        	ResultSet rs = pstmt.executeQuery();
+
+        	while(rs.next()) {
+        		Coordenada c = new Coordenada();
+        		c.setId_coordenada(rs.getInt(1));
+        		c.setId_vehiculo(rs.getInt(2));
+        		c.setFecha(rs.getDate(3));
+        		c.setHora(rs.getTime(4));
+        		c.setLatitud(rs.getDouble(5));
+        		c.setLongitud(rs.getDouble(6));
+        		
+        		cercanos.add(c);
+        	}
+        	
+        } catch (SQLException ex) {
+        	log.severe("Error en la seleccion: " + ex.getMessage());
+        }
+        finally  {
+        	try{
+        		conn.close();
+        	}catch(Exception ef){
+        		log.severe("No se pudo cerrar la conexion a BD: "+ ef.getMessage());
+        	}
+        }
+		return cercanos;
+	}	 
 
 }
