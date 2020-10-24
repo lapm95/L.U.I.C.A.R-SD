@@ -88,7 +88,7 @@ public class CoordenadaRESTService {
     }
     
     @GET
-    @Path("/{latitud},{longitud}")
+    @Path("/cercania")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Coordenada> obtenerCercanos(@QueryParam("latitud") Double latitud, @QueryParam("longitud") Double longitud) {
         
