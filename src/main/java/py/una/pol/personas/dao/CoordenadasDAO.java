@@ -26,7 +26,7 @@ public class CoordenadasDAO {
 		 * @return
 		 */
 	 public List<Coordenada> seleccionar() {
-			String query = "SELECT id_viaje, id_vehiculo, fecha, hora, latitud, longitud FROM coordenada ORDER BY id_viaje";
+			String query = "SELECT id_coordenada, id_vehiculo, fecha, hora, latitud, longitud FROM coordenada ORDER BY id_coordenada";
 			
 			List<Coordenada> lista = new ArrayList<Coordenada>();
 			
@@ -63,7 +63,7 @@ public class CoordenadasDAO {
 		}
 	 
 	 public Coordenada seleccionarPorVehiculo(Integer id_vehiculo) {
-			String SQL = "SELECT id_viaje, id_vehiculo, fecha, hora, latitud, longitud FROM coordenada WHERE id_viaje = ?";
+			String SQL = "SELECT id_coordenada, id_vehiculo, fecha, hora, latitud, longitud FROM coordenada WHERE id_coordenada = ?";
 			
 			Coordenada v = null;
 			
@@ -102,7 +102,7 @@ public class CoordenadasDAO {
 	 
 	 public long insertar(Coordenada v) throws SQLException {
 
-	        String SQL = "INSERT INTO coordenada(id_viaje, id_vehiculo, fecha, hora, latitud, longitud) "
+	        String SQL = "INSERT INTO coordenada(id_coordenada, id_vehiculo, fecha, hora, latitud, longitud) "
 	                + "VALUES(?,?,?,?,?,?)";
 	 
 	        long id = 0;
@@ -151,7 +151,7 @@ public class CoordenadasDAO {
 	public List<Coordenada> obtenerCercanos(Double latitud, Double longitud) {
 		Double limite = 20.00;			//la distancia maxima considerada
 		
-		String SQL = "SELECT id_viaje, id_vehiculo, fecha, hora, latitud, longitud FROM coordenada WHERE sqrt(power(latitud-?,2)+power(longitud-?,2)) > ?";
+		String SQL = "SELECT id_coordenada, id_vehiculo, fecha, hora, latitud, longitud FROM coordenada WHERE sqrt(power(latitud-?,2)+power(longitud-?,2)) > ?";
 		
 		List<Coordenada> cercanos = new ArrayList<Coordenada>();
 		
